@@ -19,6 +19,40 @@ There are two main things you might want to use this repository for.
 
 Copy the `bcp47.json` file and do whatever you want with it.
 
+The file format looks like this:
+
+    {"file-date": <date>,
+     "subtags": [<subtag>, <subtag>, ...]}
+
+A date is encoded like so:
+
+    {"year": 2012, "month": 9, "day": 12}
+
+Each subtag corresponds to an entry in the original registry.  It can have some
+or all of the fields:
+
+    {"type": <string>,
+     "subtag": <string>,
+     "added": <date>,
+     "deprecated": <date>,
+     "tag": <string>,
+     "prefix": <string>,
+     "preferred-value": <string>,
+     "comments": <string>,
+     "macrolanguage": <string>,
+     "supress-script": <string>,
+     "scope": <string>,
+     "description": [<string>, <string>, ...]}
+
+As you can see, most values are passed straight through as plain strings from
+the IANA registry.  There are three exceptions:
+
+`added` and `deprecated` are encoded as dates (see above).
+
+`description` is an array of strings.  In the IANA registry some tags have more
+than one description, for some reason I probably don't want to know.  If there's
+just one description for a tag it will be encoded as an array of one element.
+
 ### Generate a Fresh `bcp47.json` from the Registry
 
 The `bcp47.json` file in the repo is generated whenever we get around to it.  If
@@ -29,7 +63,16 @@ You'll need [Leiningen 2][lein].  Then do the following:
 
     git clone git://github.com/pculture/bcp47-json.git
     cd bcp47-json
+
+    mkdir checkouts
+    cd checkouts
+    git clone git://github.com/youngnh/parsatron.git
+    cd ..
+
     lein run
+
+Sorry about the Parsatron checkout, but you need to run from the latest master
+because of bugs.  Once there's another release of it I'll fix that.
 
 That will overwrite the contents of `bcp47.json` with the latest data pulled
 from the IANA registry.
