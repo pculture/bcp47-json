@@ -1,7 +1,7 @@
 bcp47-json
 ==========
 
-JSON versions of the [IANA BCP47 Language Subtag Registry](reg).  Copy them and
+JSON versions of the [IANA BCP47 Language Subtag Registry][reg].  Copy them and
 get on with your life instead of dealing with yet another custom text-based data
 format.
 
