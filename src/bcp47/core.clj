@@ -142,8 +142,7 @@
                  result)
         result (if (seq prefixes)
                  (assoc result "prefix" (vec prefixes))
-                 result)
-        ]
+                 result)]
     result))
 
 (defparser entry []
