@@ -138,10 +138,12 @@
         other (remove #(#{"description" "prefix"} (first %)) data)
         result (into {} other)
         result (if (seq descriptions)
-                 (-> result
-                   (assoc "description" (vec descriptions))
-                   (assoc "prefix" (vec prefixes)))
-                 result)]
+                 (assoc result "description" (vec descriptions))
+                 result)
+        result (if (seq prefixes)
+                 (assoc result "prefix" (vec prefixes))
+                 result)
+        ]
     result))
 
 (defparser entry []
