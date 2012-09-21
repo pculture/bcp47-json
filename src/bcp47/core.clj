@@ -15,10 +15,6 @@
 
 
 ; Parsing ---------------------------------------------------------------------
-(defn string [s]
-  (reduce nxt (concat (map char s)
-                      (list (always s)))))
-
 (defparser number [len]
   (let->> [year-chars (times len (digit))]
     (always (Integer/parseInt (apply str year-chars)))))
@@ -131,14 +127,20 @@
 
 
 ; Data
+(defn filter-multi-fields [data label]
+  (map second (filter #(= (first %) label) data)))
+
 (defn merge-data
   "Take a sequence of data line pairs and return a map."
   [data]
-  (let [descriptions (map second (filter #(= (first %) "description") data))
-        other (filter #(not= (first %) "description") data)
+  (let [descriptions (filter-multi-fields data "description")
+        prefixes (filter-multi-fields data "prefix")
+        other (remove #(#{"description" "prefix"} (first %)) data)
         result (into {} other)
         result (if (seq descriptions)
-                 (assoc result "description" (vec descriptions))
+                 (-> result
+                   (assoc "description" (vec descriptions))
+                   (assoc "prefix" (vec prefixes)))
                  result)]
     result))
 

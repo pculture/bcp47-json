@@ -36,7 +36,7 @@ or all of the fields:
      "added": <date>,
      "deprecated": <date>,
      "tag": <string>,
-     "prefix": <string>,
+     "prefix": [<string>, <string>, ...],
      "preferred-value": <string>,
      "comments": <string>,
      "macrolanguage": <string>,
@@ -45,13 +45,14 @@ or all of the fields:
      "description": [<string>, <string>, ...]}
 
 As you can see, most values are passed straight through as plain strings from
-the IANA registry.  There are three exceptions:
+the IANA registry.  There are four exceptions:
 
 `added` and `deprecated` are encoded as dates (see above).
 
-`description` is an array of strings.  In the IANA registry some tags have more
-than one description, for some reason I probably don't want to know.  If there's
-just one description for a tag it will be encoded as an array of one element.
+`description` and `prefix` are arrays of strings (possibly empty).  In the IANA
+registry some tags have more than one description and/or prefix.  If there's
+just one description/prefix for a tag it will still be encoded as an array of
+one element.
 
 ### Generate a Fresh `bcp47.json` from the Registry
 
@@ -64,15 +65,7 @@ You'll need [Leiningen 2][lein].  Then do the following:
     git clone git://github.com/pculture/bcp47-json.git
     cd bcp47-json
 
-    mkdir checkouts
-    cd checkouts
-    git clone git://github.com/youngnh/parsatron.git
-    cd ..
-
     lein run
-
-Sorry about the Parsatron checkout, but you need to run from the latest master
-because of bugs.  Once there's another release of it I'll fix that.
 
 That will overwrite the contents of `bcp47.json` with the latest data pulled
 from the IANA registry.
